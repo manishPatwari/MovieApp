@@ -2,6 +2,7 @@ package movies.flipkart.com.movies.network;
 
 import android.content.Context;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
@@ -17,6 +18,7 @@ public class NetworkRequestQueue {
     private ImageLoader mImageLoader;
     private static  NetworkRequestQueue instance;
     private NetworkRequestQueue(){};
+    private int MAX_TIME_OUT = 1000;
     public static NetworkRequestQueue getInstance(){
         if(instance == null)
         {
@@ -45,6 +47,8 @@ public class NetworkRequestQueue {
 
     public <T> void addToRequestQueue(Request<T> req)
     {
+
+        req.setRetryPolicy(new DefaultRetryPolicy(MAX_TIME_OUT, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         mRequestQueue.add(req);
     }
 

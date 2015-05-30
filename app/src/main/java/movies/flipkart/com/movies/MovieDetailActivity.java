@@ -1,12 +1,14 @@
 package movies.flipkart.com.movies;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 
@@ -17,6 +19,7 @@ import movies.flipkart.com.movies.network.NetworkRequestQueue;
 
 public class MovieDetailActivity extends Activity {
     MovieCtrl movieCtrl;
+    ProgressDialog progressDialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +27,10 @@ public class MovieDetailActivity extends Activity {
         Intent intent = getIntent();
         int position =  intent.getIntExtra("position", 0);
         movieCtrl = MovieCtrl.getInstance();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         String movieId = movieCtrl.getMovieItemAtPosition(position).getId();
         //movieCtrl.getMovieItemAtPosition(i).getId()
         movieCtrl.setDataListener(new MovieCtrl.MoviesListListeners() {
@@ -35,6 +42,12 @@ public class MovieDetailActivity extends Activity {
             @Override
             public void movieDetails(MovieDetail detail) {
                 showMoviewDetails(detail);
+            }
+
+            @Override
+            public void onError() {
+                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+                progressDialog.dismiss();
             }
         });
         movieCtrl.getMovieDetail(movieId);
@@ -52,7 +65,7 @@ public class MovieDetailActivity extends Activity {
 
         NetworkRequestQueue.getInstance().getImageLoader().get(detail.getPoster(), ImageLoader.getImageListener(poster,
                 R.mipmap.ic_launcher, R.mipmap.ic_launcher));
-
+    progressDialog.dismiss();
     }
 }
 

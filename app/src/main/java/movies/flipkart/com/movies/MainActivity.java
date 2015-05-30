@@ -1,6 +1,7 @@
 package movies.flipkart.com.movies;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,8 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -24,7 +25,7 @@ public class MainActivity extends Activity {
     private EditText mSearchQuery;
     private Button mSearchBtn;
     private ListView mMovieList;
-    private ProgressBar mProgressBar;
+    private ProgressDialog mProgressDialog;
     private MovieCtrl movieCtrl;
     private MovieListAdapter movieListAdapter;
     private Spinner spinner_type;
@@ -40,17 +41,27 @@ public class MainActivity extends Activity {
         mSearchQuery = (EditText) findViewById(R.id.txt_query);
         mSearchBtn = (Button) findViewById(R.id.btn_search);
         mMovieList = (ListView) findViewById(R.id.list_movie);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        //Setting ProgressDialog
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Searching...");
+        mProgressDialog.setCancelable(false);
+
         movieCtrl = MovieCtrl.getInstance().setDataListener(new MovieCtrl.MoviesListListeners() {
             @Override
             public void dataUpdated() {
                 movieListAdapter.notifyDataSetChanged();
-                mProgressBar.setVisibility(View.INVISIBLE);
+                mProgressDialog.dismiss();
             }
 
             @Override
             public void movieDetails(MovieDetail detail) {
 
+            }
+
+            @Override
+            public void onError() {
+                mProgressDialog.dismiss();
+                Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
             }
         });
         movieCtrl.clear();
@@ -90,9 +101,10 @@ public class MainActivity extends Activity {
         String searchQuery = mSearchQuery.getText().toString();
         if(searchQuery != null && searchQuery.trim().length() > 0)
         {
-            mProgressBar.setVisibility(View.VISIBLE);
+            mProgressDialog.show();
             String typeValue = tyepMap.get(spinner_type.getSelectedItem().toString());
-            movieCtrl.getMovies(searchQuery,typeValue);
+            movieCtrl.clear();
+            movieCtrl.getMovies(searchQuery, typeValue);
         }
     }
 
@@ -107,6 +119,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mProgressDialog.dismiss();
         AppInit.getInstance().destroy();
     }
 

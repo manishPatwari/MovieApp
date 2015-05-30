@@ -1,5 +1,7 @@
 package movies.flipkart.com.movies.controller;
 
+import android.util.Log;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.google.gson.Gson;
@@ -41,17 +43,22 @@ public class MovieCtrl {
         this.moviesListListeners = moviesListListeners;
         return instance;
     }
-    public void getMovies(String searchQuery,String type){
+    public void getMovies(final String searchQuery,String type){
 
         MovieRequest.getMovies(searchQuery, type,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                movieList = gson.fromJson(response, MovieList.class);
+              if(!response.contains("Error")) {
+                  movieList = gson.fromJson(response, MovieList.class);
+              }
                 moviesListListeners.dataUpdated();
+                Log.i("Response for Query " + searchQuery,"Success");
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                moviesListListeners.onError();
+                Log.i("Response for Query " + searchQuery, "Failed");
             }
         });
     }
@@ -73,7 +80,7 @@ public class MovieCtrl {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    moviesListListeners.onError();
                 }
             });
         }
@@ -104,5 +111,6 @@ public class MovieCtrl {
     public interface MoviesListListeners{
         public void dataUpdated();
         public void movieDetails(MovieDetail detail);
+        public void onError();
     }
 }
