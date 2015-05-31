@@ -28,8 +28,7 @@ public class MainActivity extends Activity {
     private ProgressDialog mProgressDialog;
     private MovieCtrl movieCtrl;
     private MovieListAdapter movieListAdapter;
-    private Spinner spinner_type;
-    private  HashMap<String,String> tyepMap;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,17 +82,7 @@ public class MainActivity extends Activity {
             }
         });
 
-        String[] type_name = getResources().getStringArray(R.array.types_name);
-        String[] type_id = getResources().getStringArray(R.array.types_id);
-        tyepMap = new HashMap<String, String>();
-        for (int i = 0; i < type_name.length; i++)
-        {
-            tyepMap.put(type_name[i],type_id[i]);
-        }
 
-        spinner_type = (Spinner)findViewById(R.id.type);
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,type_name);
-        spinner_type.setAdapter(typeAdapter);
     }
 
     public void handleSearchClick(View view)
@@ -102,9 +91,8 @@ public class MainActivity extends Activity {
         if(searchQuery != null && searchQuery.trim().length() > 0)
         {
             mProgressDialog.show();
-            String typeValue = tyepMap.get(spinner_type.getSelectedItem().toString());
             movieCtrl.clear();
-            movieCtrl.getMovies(searchQuery, typeValue);
+            movieCtrl.getMovies(searchQuery);
         }
     }
 

@@ -14,8 +14,8 @@ public class MovieRequest {
 
     private MovieRequest(){};
 
-    public static void getMovies(String searchQuery,String type,Response.Listener onSuccess , Response.ErrorListener onError){
-        StringRequest request = new StringRequest(Request.Method.GET,baseURL+"s="+searchQuery+"&type="+type+movieListURL,onSuccess,onError);
+    public static void getMovies(String searchQuery,Response.Listener onSuccess , Response.ErrorListener onError){
+        StringRequest request = new StringRequest(Request.Method.GET,baseURL+"s="+searchQuery+movieListURL,onSuccess,onError);
         NetworkRequestQueue.getInstance().addToRequestQueue(request);
     }
 

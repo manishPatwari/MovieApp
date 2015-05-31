@@ -43,9 +43,9 @@ public class MovieCtrl {
         this.moviesListListeners = moviesListListeners;
         return instance;
     }
-    public void getMovies(final String searchQuery,String type){
+    public void getMovies(final String searchQuery){
 
-        MovieRequest.getMovies(searchQuery, type,new Response.Listener<String>() {
+        MovieRequest.getMovies(searchQuery,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
               if(!response.contains("Error")) {
