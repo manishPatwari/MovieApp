@@ -46,25 +46,12 @@ public class MainActivity extends Activity {
         mProgressDialog.setMessage("Searching...");
         mProgressDialog.setCancelable(false);
 
-        movieCtrl = MovieCtrl.getInstance().setDataListener(new MovieCtrl.MoviesListListeners() {
-            @Override
-            public void dataUpdated() {
-                movieListAdapter.notifyDataSetChanged();
-                mProgressDialog.dismiss();
-            }
-
-            @Override
-            public void movieDetails(MovieDetail detail) {
-
-            }
-
-            @Override
-            public void onError() {
-                mProgressDialog.dismiss();
-                Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
-            }
-        });
-        movieCtrl.clear();
+        movieCtrl = MovieCtrl.getInstance();
+        //movieCtrl.clear();
+        if(movieCtrl.getSearchString() != null)
+        {
+            mSearchQuery.setText(movieCtrl.getSearchString());
+        }
         movieListAdapter = new MovieListAdapter(this,getLayoutInflater(),movieCtrl);
 
         mMovieList.setAdapter(movieListAdapter);
@@ -104,7 +91,24 @@ public class MainActivity extends Activity {
             mProgressDialog.show();
             String typeValue = tyepMap.get(spinner_type.getSelectedItem().toString());
             movieCtrl.clear();
-            movieCtrl.getMovies(searchQuery, typeValue);
+            movieCtrl.getMovies(searchQuery, typeValue,new MovieCtrl.MoviesListListeners() {
+                @Override
+                public void dataUpdated() {
+                    movieListAdapter.notifyDataSetChanged();
+                    mProgressDialog.dismiss();
+                }
+
+                @Override
+                public void movieDetails(MovieDetail detail) {
+
+                }
+
+                @Override
+                public void onError() {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

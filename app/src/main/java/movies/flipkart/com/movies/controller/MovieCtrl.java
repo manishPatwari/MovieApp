@@ -19,8 +19,9 @@ import movies.flipkart.com.movies.network.MovieRequest;
  */
 public class MovieCtrl {
     private Gson gson = new Gson();
-    private MoviesListListeners moviesListListeners;
+    //private MoviesListListeners moviesListListeners;
     private MovieList movieList;
+    private String searchString;
     private static Map<String,MovieDetail>  movieDetails ;
 
     private static MovieCtrl instance;
@@ -38,13 +39,17 @@ public class MovieCtrl {
         return instance;
     }
 
-
-    public  MovieCtrl setDataListener(MoviesListListeners moviesListListeners){
-        this.moviesListListeners = moviesListListeners;
-        return instance;
+    public String getSearchString() {
+        return searchString;
     }
-    public void getMovies(final String searchQuery,String type){
 
+
+    //    public  MovieCtrl setDataListener(MoviesListListeners moviesListListeners){
+//        this.moviesListListeners = moviesListListeners;
+//        return instance;
+//    }
+    public void getMovies(final String searchQuery,String type,final MoviesListListeners moviesListListeners){
+        searchString = searchQuery;
         MovieRequest.getMovies(searchQuery, type,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -63,7 +68,7 @@ public class MovieCtrl {
         });
     }
 
-    public void getMovieDetail(final String movieId)
+    public void getMovieDetail(final String movieId,final MoviesListListeners moviesListListeners)
     {
         if(movieDetails.containsKey(movieId))
         {
