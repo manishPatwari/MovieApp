@@ -14,7 +14,10 @@
         >
         <EditText
             android:layout_width="0dp"
+
             android:layout_height="wrap_content"
+            android:singleLine="true"
+
             android:layout_weight="2"
             android:id="@+id/txt_query"
             android:hint="@string/abc_search_hint"/>

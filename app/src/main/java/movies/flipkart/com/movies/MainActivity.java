@@ -2,9 +2,12 @@ package movies.flipkart.com.movies;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -38,6 +41,8 @@ public class MainActivity extends Activity {
         AppInit.getInstance().initialize(this);
 
         mSearchQuery = (EditText) findViewById(R.id.txt_query);
+
+
         mSearchBtn = (Button) findViewById(R.id.btn_search);
         mMovieList = (ListView) findViewById(R.id.list_movie);
         //Setting ProgressDialog
@@ -63,7 +68,12 @@ public class MainActivity extends Activity {
                 Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
             }
         });
-        movieCtrl.clear();
+       // movieCtrl.clear();
+        if(movieCtrl.getSearchString() != null)
+        {
+            mSearchQuery.setText(movieCtrl.getSearchString());
+            mSearchQuery.setSelection(mSearchQuery.getText().length());
+        }
         movieListAdapter = new MovieListAdapter(this,getLayoutInflater(),movieCtrl);
 
         mMovieList.setAdapter(movieListAdapter);
@@ -73,6 +83,34 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 handleSearchClick(view);
+                // code to hide the soft keyboard
+                InputMethodManager      imm = (InputMethodManager) getSystemService(
+                        Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(mSearchQuery.getApplicationWindowToken(), 0);
+            }
+        });
+
+        mSearchQuery.setOnKeyListener(new View.OnKeyListener()
+        {
+            public boolean onKey(View v, int keyCode, KeyEvent event)
+            {
+                if (event.getAction() == KeyEvent.ACTION_DOWN)
+                {
+                    switch (keyCode)
+                    {
+                        case KeyEvent.KEYCODE_DPAD_CENTER:
+                        case KeyEvent.KEYCODE_ENTER:
+                            handleSearchClick(v);
+                            // code to hide the soft keyboard
+                            InputMethodManager      imm = (InputMethodManager) getSystemService(
+                                    Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(mSearchQuery.getApplicationWindowToken(), 0);
+                            return true;
+                        default:
+                            break;
+                    }
+                }
+                return false;
             }
         });
         mMovieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
