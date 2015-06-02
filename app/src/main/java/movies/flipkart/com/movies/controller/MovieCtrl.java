@@ -21,6 +21,7 @@ public class MovieCtrl {
     private Gson gson = new Gson();
     private MoviesListListeners moviesListListeners;
     private MovieList movieList;
+    private String searchString;
     private static Map<String,MovieDetail>  movieDetails ;
 
     private static MovieCtrl instance;
@@ -37,15 +38,18 @@ public class MovieCtrl {
         }
         return instance;
     }
+    public String getSearchString() {
+        return searchString;
+    }
 
 
     public  MovieCtrl setDataListener(MoviesListListeners moviesListListeners){
         this.moviesListListeners = moviesListListeners;
         return instance;
     }
-    public void getMovies(final String searchQuery,String type){
-
-        MovieRequest.getMovies(searchQuery, type,new Response.Listener<String>() {
+    public void getMovies(final String searchQuery){
+        searchString = searchQuery;
+        MovieRequest.getMovies(searchQuery,new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
               if(!response.contains("Error")) {

@@ -64,7 +64,7 @@ public class MovieDetailActivity extends Activity {
         ImageView poster = (ImageView)findViewById(R.id.detail_poster);
 
         NetworkRequestQueue.getInstance().getImageLoader().get(detail.getPoster(), ImageLoader.getImageListener(poster,
-                R.mipmap.ic_launcher, R.mipmap.ic_launcher));
+                R.mipmap.app_icon, R.mipmap.app_icon));
     progressDialog.dismiss();
     }
 }
