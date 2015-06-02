@@ -9,14 +9,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.util.HashMap;
 
 import movies.flipkart.com.movies.adapters.MovieListAdapter;
 import movies.flipkart.com.movies.controller.MovieCtrl;
@@ -31,7 +27,6 @@ public class MainActivity extends Activity {
     private ProgressDialog mProgressDialog;
     private MovieCtrl movieCtrl;
     private MovieListAdapter movieListAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
