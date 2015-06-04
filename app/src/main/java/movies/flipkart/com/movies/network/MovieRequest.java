@@ -16,6 +16,7 @@ public class MovieRequest {
 
     public static void getMovies(String searchQuery,Response.Listener onSuccess , Response.ErrorListener onError){
         StringRequest request = new StringRequest(Request.Method.GET,baseURL+"s="+searchQuery+movieListURL,onSuccess,onError);
+       // request.setShouldCache(false);
         NetworkRequestQueue.getInstance().addToRequestQueue(request);
     }
 

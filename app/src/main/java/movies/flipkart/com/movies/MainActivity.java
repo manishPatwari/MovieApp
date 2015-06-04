@@ -108,20 +108,22 @@ public class MainActivity extends Activity {
         {
             progressDialog.show();
             movieCtrl.clear();
-            movieCtrl.getMovies(searchQuery,new MovieCtrl.MoviesListListeners() {
-                @Override
-                public void dataUpdated() {
-                    movieListAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
-                }
-                @Override
-                public void onError() {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
-                }
-            });
+            movieCtrl.getMovies(searchQuery,moviesListListener);
         }
     }
+
+    MovieCtrl.MoviesListListener moviesListListener = new MovieCtrl.MoviesListListener() {
+        @Override
+        public void dataUpdated() {
+            movieListAdapter.notifyDataSetChanged();
+            progressDialog.dismiss();
+        }
+        @Override
+        public void onError() {
+            progressDialog.dismiss();
+            Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_SHORT).show();
+        }
+    };
 
 /*   Parameters
     parent -	The AdapterView where the click happened.

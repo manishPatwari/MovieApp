@@ -34,7 +34,7 @@ public class MovieCtrl {
         return searchString;
     }
 
-    public void getMovies(final String searchQuery,final MoviesListListeners moviesListListeners){
+    public void getMovies(final String searchQuery,final MoviesListListener moviesListListener){
         searchString = searchQuery;
         MovieRequest.getMovies(searchQuery,new Response.Listener<String>() {
             @Override
@@ -42,29 +42,29 @@ public class MovieCtrl {
               if(!response.contains("Error")) {
                   movieList = gson.fromJson(response, MovieList.class);
               }
-                moviesListListeners.dataUpdated();
+                moviesListListener.dataUpdated();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                moviesListListeners.onError();
+                moviesListListener.onError();
             }
         });
     }
 
-    public void getMovieDetail(final String movieId,final MovieDetailListeners movieDetailListeners)
+    public void getMovieDetail(final String movieId,final MovieDetailListener movieDetailListener)
     {
 
             MovieRequest.getMovieDetail(movieId, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     MovieDetail movieDetail = gson.fromJson(response, MovieDetail.class);
-                    movieDetailListeners.movieDetails(movieDetail);
+                    movieDetailListener.movieDetails(movieDetail);
                 }
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    movieDetailListeners.onError();
+                    movieDetailListener.onError();
                 }
             });
 
@@ -94,11 +94,11 @@ public class MovieCtrl {
         instance = null;
     }
 
-    public interface MoviesListListeners{
+    public interface MoviesListListener {
         public void dataUpdated();
         public void onError();
     }
-    public interface MovieDetailListeners{
+    public interface MovieDetailListener {
         public void movieDetails(MovieDetail detail);
         public void onError();
     }

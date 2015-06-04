@@ -25,6 +25,7 @@ public class MovieDetailActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail);
+
         Intent intent = getIntent();
         int position =  intent.getIntExtra("position", 0);
         movieCtrl = MovieCtrl.getInstance();
@@ -36,20 +37,22 @@ public class MovieDetailActivity extends Activity {
 
         String movieId = movieCtrl.getMovieItemAtPosition(position).getId();
 
-        movieCtrl.getMovieDetail(movieId,new MovieCtrl.MovieDetailListeners() {
-            @Override
-            public void movieDetails(MovieDetail detail) {
-                showMoviewDetails(detail);
-            }
-
-            @Override
-            public void onError() {
-                Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
-                progressDialog.dismiss();
-            }
-        });
+        movieCtrl.getMovieDetail(movieId,movieDetailListener);
 
     }
+
+    MovieCtrl.MovieDetailListener movieDetailListener = new MovieCtrl.MovieDetailListener() {
+        @Override
+        public void movieDetails(MovieDetail detail) {
+            showMoviewDetails(detail);
+        }
+
+        @Override
+        public void onError() {
+            Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_SHORT).show();
+            progressDialog.dismiss();
+        }
+    };
 
     private void showMoviewDetails(MovieDetail detail)
     {
