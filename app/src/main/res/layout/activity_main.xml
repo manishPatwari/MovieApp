@@ -1,11 +1,9 @@
-<RelativeLayout
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" android:layout_margin="5dp">
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,10 +12,8 @@
         >
         <EditText
             android:layout_width="0dp"
-
             android:layout_height="wrap_content"
             android:singleLine="true"
-
             android:layout_weight="2"
             android:id="@+id/txt_query"
             android:hint="@string/abc_search_hint"/>
@@ -28,6 +24,7 @@
             android:id="@+id/btn_search"
             android:text="@string/search_btn"/>
     </LinearLayout>
+
 <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -44,6 +41,4 @@
         android:layout_marginTop="5dp">
     </ListView>
 </RelativeLayout>
-
 </LinearLayout>
-</RelativeLayout>

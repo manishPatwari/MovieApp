@@ -19,8 +19,7 @@
         </activity>
         <activity
             android:name=".MovieDetailActivity"
-            android:label="@string/app_detail_name"
-            android:parentActivityName=".MainActivity" >
+            android:label="@string/app_detail_name">
         </activity>
     </application>
 

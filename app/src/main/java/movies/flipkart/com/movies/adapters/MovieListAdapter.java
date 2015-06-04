@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import movies.flipkart.com.movies.R;
@@ -48,8 +49,8 @@ public class MovieListAdapter extends BaseAdapter {
         {
             holder = new Holder();
             view = inflater.inflate(R.layout.movie_items,null);
-            holder.mTitle = (TextView) view.findViewById(R.id.item_movie_title);
-            holder.mYr = (TextView) view.findViewById(R.id.item_movie_yr);
+            holder.imageView = (ImageView)view.findViewById(R.id.item_movie_icon);
+            holder.title = (TextView) view.findViewById(R.id.item_movie_title);
             holder.type = (TextView) view.findViewById(R.id.item_movie_type);
             view.setTag(holder);
         }
@@ -60,14 +61,20 @@ public class MovieListAdapter extends BaseAdapter {
 
         MovieItem movieItem = (MovieItem)getItem(i);
         holder.type.setText(movieItem.getType() + " - ");
-        holder.mTitle.setText(movieItem.getTitle());
-        holder.mYr.setText("( " +movieItem.getYear() + " )");
+        holder.title.setText(movieItem.getTitle() + " ( " + movieItem.getYear() + " )");
+        if(movieItem.getType().equals("series"))
+        {
+            holder.imageView.setImageResource(R.mipmap.series_icon);
+        }
+        else{
+            holder.imageView.setImageResource(R.mipmap.app_icon);
+        }
         return view;
     }
 
     public class Holder{
-        private TextView mTitle;
-        private TextView mYr;
+        private ImageView imageView;
+        private TextView title;
         private TextView type;
     }
 }

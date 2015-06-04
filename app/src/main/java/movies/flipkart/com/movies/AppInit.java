@@ -8,7 +8,6 @@ import movies.flipkart.com.movies.network.NetworkRequestQueue;
  * Created by manish.patwari on 5/29/15.
  */
 public class AppInit {
-    private NetworkRequestQueue mNetworkRequestQueue;
     private static  AppInit instance;
     private AppInit(){};
     public static AppInit getInstance(){
@@ -24,13 +23,13 @@ public class AppInit {
 
     public AppInit initialize(Context context)
     {
-        mNetworkRequestQueue = NetworkRequestQueue.getInstance().initialize(context);
+        NetworkRequestQueue.getInstance().initialize(context);
         return instance;
     };
 
     public void destroy(){
-        mNetworkRequestQueue.destroy();
+        NetworkRequestQueue.getInstance().destroy();
+       // MovieCtrl.getInstance().destroy();
     }
-
 }
 

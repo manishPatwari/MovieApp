@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,18 +28,15 @@ public class MovieDetailActivity extends Activity {
         Intent intent = getIntent();
         int position =  intent.getIntExtra("position", 0);
         movieCtrl = MovieCtrl.getInstance();
+
         progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
+        progressDialog.setMessage(getResources().getString(R.string.loading_msg));
         progressDialog.setCancelable(false);
         progressDialog.show();
+
         String movieId = movieCtrl.getMovieItemAtPosition(position).getId();
-        //movieCtrl.getMovieItemAtPosition(i).getId()
-        movieCtrl.setDataListener(new MovieCtrl.MoviesListListeners() {
-            @Override
-            public void dataUpdated() {
 
-            }
-
+        movieCtrl.getMovieDetail(movieId,new MovieCtrl.MovieDetailListeners() {
             @Override
             public void movieDetails(MovieDetail detail) {
                 showMoviewDetails(detail);
@@ -50,22 +48,28 @@ public class MovieDetailActivity extends Activity {
                 progressDialog.dismiss();
             }
         });
-        movieCtrl.getMovieDetail(movieId);
+
     }
 
     private void showMoviewDetails(MovieDetail detail)
     {
         ((LinearLayout)findViewById(R.id.movie_details)).setVisibility(View.VISIBLE);
-        ((TextView)findViewById(R.id.detail_title)).setText(detail.getTitle());
+        ((TextView)findViewById(R.id.detail_movie_title)).setText(detail.getTitle());
         ((TextView)findViewById(R.id.detail_director)).setText(detail.getDirector());
         ((TextView)findViewById(R.id.detail_plot)).setText(detail.getPlot());
         ((TextView)findViewById(R.id.detail_actor)).setText(detail.getActors());
 
         ImageView poster = (ImageView)findViewById(R.id.detail_poster);
-
-        NetworkRequestQueue.getInstance().getImageLoader().get(detail.getPoster(), ImageLoader.getImageListener(poster,
-                R.mipmap.app_icon, R.mipmap.app_icon));
-    progressDialog.dismiss();
+        if(!detail.getPoster().equals("N/A")) {
+            Log.i("Poster URL " , detail.getPoster());
+            NetworkRequestQueue.getInstance().getImageLoader().get(detail.getPoster(), ImageLoader.getImageListener(poster,
+                    R.mipmap.app_icon, R.mipmap.app_icon));
+        }
+        else
+        {
+            poster.setImageResource(R.mipmap.app_icon);
+        }
+        progressDialog.dismiss();
     }
 }
 
