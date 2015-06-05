@@ -9,8 +9,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
-import movies.flipkart.com.movies.utils.LruBitmapCache;
-
 /**
  * Created by manish.patwari on 5/29/15.
  */
@@ -34,7 +32,7 @@ public class NetworkRequestQueue {
     {
         mRequestQueue = Volley.newRequestQueue(context.getApplicationContext(),1024*1024); // 1MB Cache Size
         mRequestQueue.start();
-        mImageLoader = new ImageLoader(mRequestQueue,new LruBitmapCache(context.getApplicationContext()));
+        //mImageLoader = new ImageLoader(mRequestQueue,new LruBitmapCache(context.getApplicationContext()));
 
         mImageLoader = new ImageLoader(mRequestQueue,new ImageLoader.ImageCache() {
 
